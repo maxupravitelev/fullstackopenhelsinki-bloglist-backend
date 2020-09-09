@@ -43,7 +43,7 @@ test('a valid blog can be added', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
-    .expect(201)
+    .expect(200)
     .expect('Content-Type', /application\/json/)
 
   const blogsAtEnd = await helper.blogsInDb()
@@ -56,12 +56,62 @@ test('a valid blog can be added', async () => {
   )
 })
 
-// test('blogs are returned as json', async () => {
-//     await api
-//       .get('/api/blogs')
-//       .expect(200)
-//       .expect('Content-Type', /application\/json/)
-//   })
+test('insert default value of 0 if likes-property is missing ', async () => {
+
+  const newBlog = {
+    title: 'Testing without likes',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blog = await Blog.find({title: 'Testing without likes'})
+
+  expect(blog[0]["likes"]).toEqual(0)
+
+})
+
+test('missing title & url', async () => {
+
+  const newBlog = {
+    author: 'Edsger W. Dijkstra',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
+
+test('delete blog', async () => {
+  
+  const id = '5a422a851b54a676234d17f7'
+
+  await api
+    .delete('/api/blogs/' + id)
+    .expect(204)
+
+})
+
+test('update likes', async () => {
+  
+  const id = '5a422a851b54a676234d17f7'
+
+  let likes = {likes: 20}
+
+  await api
+    .put('/api/blogs/' + id)
+    .send(likes)
+    .expect(likes)
+
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
