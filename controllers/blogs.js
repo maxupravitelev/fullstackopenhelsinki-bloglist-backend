@@ -29,9 +29,14 @@ blogRouter.get("/", async (request, response) => {
 blogRouter.post("/", async (request, response) => {
   const body = request.body
 
-  
-  const user = await User.findById(body.userId)
-  
+  let user = {}
+
+  if (!body.userId) {
+    user = await User.findById('5f5b5e603dcf8d4dccd86e12')  // if no userId provided, assign any user as a creator (4.17)
+  } else {
+    user = await User.findById(body.userId)
+  }
+
   const blog = new Blog({
     title: body.title,
     author: body.author,
