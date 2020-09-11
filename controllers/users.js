@@ -26,6 +26,7 @@ usersRouter.post('/', async (request, response) => {
 
   usersRouter.get('/', async (request, response) => {
     User.find({}).then((users) => {
+        console.log(users)
         response.json(users)
     })
 
