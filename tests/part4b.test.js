@@ -29,7 +29,7 @@ test('testing amount of blogs', async () => {
 })
 
 
-test('a valid blog can be added', async () => {
+test.only('a valid blog can be added', async () => {
   const newBlog = {
     title: 'Canonical string reduction',
     author: 'Edsger W. Dijkstra',
@@ -40,6 +40,7 @@ test('a valid blog can be added', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization')
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
