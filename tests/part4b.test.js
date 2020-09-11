@@ -7,6 +7,8 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 
+let global_token = ''
+
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -15,6 +17,14 @@ beforeEach(async () => {
 
   blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
+
+  await api
+      .post('/api/login')
+      .send({ username: 'root', password: 'sekret' })
+      .then(response => global_token = response.body.token)
+
+      
+
 })
 
 test('testing amount of blogs', async () => {
@@ -29,7 +39,7 @@ test('testing amount of blogs', async () => {
 })
 
 
-test.only('a valid blog can be added', async () => {
+test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'Canonical string reduction',
     author: 'Edsger W. Dijkstra',
@@ -40,7 +50,7 @@ test.only('a valid blog can be added', async () => {
 
   await api
     .post('/api/blogs')
-    .set('Authorization')
+    .set('Authorization', `Bearer ${global_token}`)
     .send(newBlog)
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -63,6 +73,7 @@ test('insert default value of 0 if likes-property is missing ', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
+    .set('Authorization', `Bearer ${global_token}`)
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
@@ -81,6 +92,7 @@ test('missing title & url', async () => {
 
   await api
     .post('/api/blogs')
+    .set('Authorization', `Bearer ${global_token}`)
     .send(newBlog)
     .expect(400)
 })
