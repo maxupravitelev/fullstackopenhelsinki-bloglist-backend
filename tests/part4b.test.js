@@ -35,6 +35,7 @@ test('a valid blog can be added', async () => {
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
     likes: 12,
+    userId: '5f5b5e603dcf8d4dccd86e12'
   }
 
   await api
@@ -54,7 +55,8 @@ test('insert default value of 0 if likes-property is missing ', async () => {
   const newBlog = {
     title: 'Testing without likes',
     author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html'
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    userId: '5f5b5e603dcf8d4dccd86e12'
   }
 
   await api
@@ -73,6 +75,7 @@ test('missing title & url', async () => {
 
   const newBlog = {
     author: 'Edsger W. Dijkstra',
+    userId: '5f5b5e603dcf8d4dccd86e12'
   }
 
   await api
