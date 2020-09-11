@@ -3,10 +3,11 @@ const Blog = require("../models/blog");
 const User = require("../models/user");
 
 
-blogRouter.get("/", (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs);
-  });
+blogRouter.get("/", async (request, response) => {
+  const notes = await Blog
+    .find({}).populate('user', { username: 1, name: 1 })
+
+  response.json(notes)
 });
 
 // blogRouter.post("/", (request, response) => {
@@ -28,6 +29,7 @@ blogRouter.get("/", (request, response) => {
 blogRouter.post("/", async (request, response) => {
   const body = request.body
 
+  
   const user = await User.findById(body.userId)
   
   const blog = new Blog({
