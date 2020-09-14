@@ -19,11 +19,9 @@ beforeEach(async () => {
   await blogObject.save()
 
   await api
-      .post('/api/login')
-      .send({ username: 'root', password: 'sekret' })
-      .then(response => global_token = response.body.token)
-
-      
+    .post('/api/login')
+    .send({ username: 'root', password: 'sekret' })
+    .then(response => global_token = response.body.token)
 
 })
 
@@ -57,7 +55,7 @@ test('a valid blog can be added', async () => {
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-  
+
   const titles = blogsAtEnd.map(r => r.title)
   expect(titles).toContain('Canonical string reduction')
 })
@@ -77,9 +75,9 @@ test('insert default value of 0 if likes-property is missing ', async () => {
     .expect(200)
     .expect('Content-Type', /application\/json/)
 
-  const blog = await Blog.find({title: 'Testing without likes'})
+  const blog = await Blog.find({ title: 'Testing without likes' })
 
-  expect(blog[0]["likes"]).toEqual(0)
+  expect(blog[0]['likes']).toEqual(0)
 
 })
 
@@ -99,20 +97,24 @@ test('missing title & url', async () => {
 
 
 test('delete blog', async () => {
+
+  let blogId = '5a422a851b54a676234d17f7'
   
-  const id = '5a422a851b54a676234d17f7'
+  let userId = '5f5b5e603dcf8d4dccd86e12'
 
   await api
-    .delete('/api/blogs/' + id)
+    .delete('/api/blogs/' + blogId)
+    .send({userId})
+    .set('Authorization', `Bearer ${global_token}`)
     .expect(204)
 
 })
 
 test('update likes', async () => {
-  
+
   const id = '5a422a851b54a676234d17f7'
 
-  let likes = {likes: 20}
+  let likes = { likes: 20 }
 
   await api
     .put('/api/blogs/' + id)
