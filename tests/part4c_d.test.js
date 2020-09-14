@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const Blog = require("../models/blog");
 
-// const mongoose = require('mongoose')
 const supertest = require("supertest");
 const app = require("../app");
 const helper = require("./test_helper");
@@ -106,5 +105,4 @@ test("delete blog while user is logged in", async () => {
     .send({userId})
     .set('Authorization', `Bearer ${global_token}`)
     .expect(204)
-
 });

@@ -30,12 +30,10 @@ test('testing amount of blogs', async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
-// check test naming
 test('testing amount of blogs', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body[0]['id']).toBeDefined()
 })
-
 
 test('a valid blog can be added', async () => {
   const newBlog = {
@@ -95,7 +93,6 @@ test('missing title & url', async () => {
     .expect(400)
 })
 
-
 test('delete blog', async () => {
 
   let blogId = '5a422a851b54a676234d17f7'
@@ -121,7 +118,6 @@ test('update likes', async () => {
     .send(likes)
     .expect(likes)
 })
-
 
 afterAll(() => {
   mongoose.connection.close()
