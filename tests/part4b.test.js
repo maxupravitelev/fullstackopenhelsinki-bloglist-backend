@@ -107,7 +107,7 @@ test('delete blog', async () => {
 
 })
 
-test('update likes', async () => {
+test.only('update likes', async () => {
 
   const id = '5a422a851b54a676234d17f7'
 
@@ -116,6 +116,7 @@ test('update likes', async () => {
   await api
     .put('/api/blogs/' + id)
     .send(likes)
+    .set('Authorization', `Bearer ${global_token}`)
     .expect(likes)
 })
 
