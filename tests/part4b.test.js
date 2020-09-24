@@ -101,13 +101,13 @@ test('delete blog', async () => {
 
   await api
     .delete('/api/blogs/' + blogId)
-    .send({userId})
+    .send({ userId })
     .set('Authorization', `Bearer ${global_token}`)
     .expect(204)
 
 })
 
-test.only('update likes', async () => {
+test('update likes', async () => {
 
   const id = '5a422a851b54a676234d17f7'
 
