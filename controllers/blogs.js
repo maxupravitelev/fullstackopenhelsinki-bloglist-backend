@@ -4,12 +4,15 @@ const User = require('../models/user')
 
 const jwt = require('jsonwebtoken')
 
+// get all blogposts by user
 blogRouter.get('/', async (request, response) => {
-  const notes = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
 
-  response.json(notes)
+  response.json(blogs)
 })
 
+
+// create new blogpost
 blogRouter.post('/', async (request, response) => {
   const body = request.body
 
@@ -34,6 +37,7 @@ blogRouter.post('/', async (request, response) => {
   response.json(savedBlog)
 })
 
+// remove blogpost by id
 blogRouter.delete('/:id', async (request, response) => {
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
@@ -42,10 +46,6 @@ blogRouter.delete('/:id', async (request, response) => {
   }
 
   const blog = await Blog.findById(request.params.id)
-
-  console.log(request.params.id)
-  console.log(blog)
-  console.log(request.body.userId)
 
   if (blog.user.toString() === request.body.userId.toString()) {
     await Blog.findByIdAndRemove(request.params.id)
@@ -57,9 +57,8 @@ blogRouter.delete('/:id', async (request, response) => {
   }
 })
 
+// update likes
 blogRouter.put('/:id', async (request, response) => {
-
-  // console.log(request.token)
 
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
@@ -73,8 +72,8 @@ blogRouter.put('/:id', async (request, response) => {
     likes: body.likes,
   }
 
-  await Blog.findByIdAndUpdate(request.params.id, updatedLikes, { new: true })
-  response.json(updatedLikes)
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedLikes, { new: true })
+  response.json(updatedBlog)
 })
 
 module.exports = blogRouter
