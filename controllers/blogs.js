@@ -20,7 +20,10 @@ blogRouter.post('/', async (request, response) => {
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
+
   const user = await User.findById(decodedToken.id)
+
+  console.log(user)
 
   const blog = new Blog({
     title: body.title,
@@ -28,6 +31,7 @@ blogRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: user._id,
+    comments: []
   })
 
   const savedBlog = await blog.save()
@@ -74,6 +78,32 @@ blogRouter.put('/:id', async (request, response) => {
 
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedLikes, { new: true })
   response.json(updatedBlog)
+})
+
+// add comments
+blogRouter.put('/:id/comments', async (request, response) => {
+
+  const blogId = request.params.id
+
+  const body = request.body
+
+  const newComment = body.newComment
+  console.log(newComment)
+  const oldBlog = await Blog.findById(blogId)
+
+  const oldComments = oldBlog.comments
+
+  const updatedComments = {
+    comments: [...oldComments, newComment]
+  }
+
+  console.log(updatedComments)
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedComments, { new: true })
+  response.json(updatedBlog)
+
+  
+
 })
 
 module.exports = blogRouter
