@@ -4,4 +4,4 @@ Solution for part 7 exercises of the [Full Stack Open Course by the University o
 
 [Frontend](https://github.com/maxupravitelev/fullstackopenhelsinki-bloglist-frontend) stack: React, Redux
 [Backend](https://github.com/maxupravitelev/fullstackopenhelsinki-bloglist-backend) stack: Node, Express, MongoDB, Mongoose
-Testing stack: Cypress
+Testing stack: Cypress, Jest
