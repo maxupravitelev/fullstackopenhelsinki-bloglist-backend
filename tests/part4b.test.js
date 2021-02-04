@@ -9,6 +9,7 @@ const Blog = require('../models/blog')
 
 let global_token = ''
 
+// reset before each rest
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -30,7 +31,7 @@ test('testing amount of blogs', async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
-test('testing amount of blogs', async () => {
+test('test if blog is available', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body[0]['id']).toBeDefined()
 })

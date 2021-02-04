@@ -3,18 +3,20 @@ const bcrypt = require('bcrypt')
 const loginRouter = require('express').Router()
 const User = require('../models/user')
 
+// post login data to backend and check credentials
 loginRouter.post('/', async (request, response) => {
   const body = request.body
-  
+
   const user = await User.findOne({ username: body.username })
 
-  const passwordCorrect = user === null
-    ? false
-    : await bcrypt.compare(body.password, user.passwordHash)
+  const passwordCorrect =
+    user === null
+      ? false
+      : await bcrypt.compare(body.password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
-      error: 'invalid username or password'
+      error: 'invalid username or password',
     })
   }
 

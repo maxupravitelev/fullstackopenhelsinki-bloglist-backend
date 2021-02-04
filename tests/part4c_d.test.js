@@ -11,6 +11,7 @@ const api = supertest(app)
 
 let global_token = ''
 
+// reset before each rest
 beforeEach(async () => {
   await Blog.deleteMany({})
 

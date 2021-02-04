@@ -11,7 +11,6 @@ blogRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-
 // create new blogpost
 blogRouter.post('/', async (request, response) => {
   const body = request.body
@@ -23,7 +22,7 @@ blogRouter.post('/', async (request, response) => {
 
   const user = await User.findById(decodedToken.id)
 
-  console.log(user)
+  // console.log(user)
 
   const blog = new Blog({
     title: body.title,
@@ -31,7 +30,7 @@ blogRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes,
     user: user._id,
-    comments: []
+    comments: [],
   })
 
   const savedBlog = await blog.save()
@@ -63,7 +62,6 @@ blogRouter.delete('/:id', async (request, response) => {
 
 // update likes
 blogRouter.put('/:id', async (request, response) => {
-
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
   if (!request.token || !decodedToken.id) {
@@ -76,34 +74,37 @@ blogRouter.put('/:id', async (request, response) => {
     likes: body.likes,
   }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedLikes, { new: true })
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    updatedLikes,
+    { new: true }
+  )
   response.json(updatedBlog)
 })
 
 // add comments
 blogRouter.put('/:id/comments', async (request, response) => {
-
   const blogId = request.params.id
 
   const body = request.body
 
   const newComment = body.newComment
-  console.log(newComment)
+
   const oldBlog = await Blog.findById(blogId)
 
   const oldComments = oldBlog.comments
 
   const updatedComments = {
-    comments: [...oldComments, newComment]
+    comments: [...oldComments, newComment],
   }
 
-  console.log(updatedComments)
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, updatedComments, { new: true })
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    updatedComments,
+    { new: true }
+  )
   response.json(updatedBlog)
-
-  
-
 })
 
 module.exports = blogRouter

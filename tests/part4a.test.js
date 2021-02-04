@@ -1,7 +1,7 @@
 const listHelper = require("../utils/list_helper");
 
 
-describe("total likes", () => {
+describe("get total likes of a blog", () => {
   const listWithOneBlog = [
     {
       _id: "5a422aa71b54a676234d17f8",
@@ -14,7 +14,7 @@ describe("total likes", () => {
     },
   ];
 
-  test("when list has only one blog, equals the likes of that", () => {
+  test("when list has only one blog, show likes of that blog", () => {
     const result = listHelper.totalLikes(listWithOneBlog);
     console.log(result)
     expect(result).toBe(5);
@@ -76,7 +76,7 @@ const blogs = [
   },
 ];
 
-describe("favorite blog", () => {
+describe("return favorite blog", () => {
   
   test.only("testing favorite blog", () => {
     const result = listHelper.favoriteBlog(blogs);
